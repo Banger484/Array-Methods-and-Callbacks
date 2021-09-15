@@ -25,17 +25,17 @@ Use getFinals to do the following:
 
 hint - you should be looking at the stage key inside of the objects
 */
-const finalTeams = [];
+
 function getFinals(data){
-    for(let i = 0; i < data.length; i++){
-        if(data[i].Stage == "Final"){
-            finalTeams.push(data[i]);
-        }
-    }
-    return finalTeams
+    const finalTeams = data.filter(function(item){
+        return item.Stage === "Final"
+    })
+     return finalTeams   
 }
-getFinals(fifaData);
-// console.log(finalTeams);
+    
+
+console.log('Task 2',getFinals(fifaData));
+
 
 
 /* 🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀 Task 3: 🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀
@@ -49,7 +49,7 @@ function getYears(array, getFinalscb) {
     const years = getFinalscb(array).map(item => item.Year)
     return years
 }
-console.log(getYears(fifaData, getFinals))
+console.log('Task 3', getYears(fifaData, getFinals))
 
 /* 🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀 Task 4: 🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀
 Use the higher-order function getWinners to do the following:  
@@ -69,7 +69,7 @@ function getWinners(array, getFinalscb) {
     return winners
 }
     
-console.log(getWinners(fifaData, getFinals));
+console.log('Task 4', getWinners(fifaData, getFinals));
 
 
 /* 🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀 Task 5: 🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀 
@@ -83,8 +83,13 @@ hint: the strings returned need to exactly match the string in step 4.
  */
 
 function getWinnersByYear(array, getYearsCb, getWinnersCb) {
-    /* code here */
+    const yearArray = getYearsCb(array, getFinals);
+    const winnerArray = getWinnersCb(array, getFinals).map(function(item, index){
+        return `In ${yearArray[index]}, ${item} won the world cup!`
+    });
+    return winnerArray
 }
+console.log('Task 5', getWinnersByYear(fifaData, getYears, getWinners))
 
 
 
@@ -98,10 +103,13 @@ Use the higher order function getAverageGoals to do the following:
  Example of invocation: getAverageGoals(getFinals(fifaData));
 */
 
-function getAverageGoals(/* code here */) {
-   /* code here */
+function getAverageGoals(getFinalscb) {
+   const goals = getFinalscb.reduce(function(acc, item){
+       return acc + item['Home Team Goals'] + item['Away Team Goals'];
+   }, 0) / getFinalscb.length
+   return goals.toFixed(2);
 }
-
+console.log('Task 6',getAverageGoals(getFinals(fifaData)))
 
 
 
